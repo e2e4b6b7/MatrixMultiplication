@@ -7,17 +7,39 @@ on:
     branches: [ main ]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    
-    steps: 
-    - name: Download Stack
-      run: stack upgrade || curl -sSL https://get.haskellstack.org/ | sh
-    - name: Init Stack
-      run: stack init
-    - name: Setup Stack
-      run: stack setup
-    - name: Build
-      run: stack build
-    - name: Test
-      run: stack test
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-haskell@v1
+        with:
+          ghc-version: '8.10.3'
+          cabal-version: '3.2'
+
+      - name: Cache
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-cabal
+        with:
+          path: ~/.cabal
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Run hpack
+        run: |
+          sudo apt install hpack
+          hpack
+
+      - name: Install dependencies
+        run: |
+          cabal update
+          cabal build --only-dependencies --enable-tests
+      - name: Build
+        run: cabal build --enable-tests all
+      - name: Run tests
+        run: cabal test all
