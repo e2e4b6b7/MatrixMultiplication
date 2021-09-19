@@ -12,7 +12,7 @@ jobs:
     
     steps: 
     - name: Download Stack
-      run: curl -sSL https://get.haskellstack.org/ | sh
+      run: stack || curl -sSL https://get.haskellstack.org/ | sh
     - name: Init Stack
       run: stack init
     - name: Build
