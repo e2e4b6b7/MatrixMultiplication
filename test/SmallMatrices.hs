@@ -1,6 +1,6 @@
 module SmallMatrices (runTests) where
 
-import Lib
+import Matrix
 import Test.Tasty.HUnit (Assertion, (@?=))
 
 empty :: Matrix Int

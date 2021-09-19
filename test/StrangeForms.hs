@@ -1,6 +1,6 @@
 module StrangeForms (runTests) where
 
-import Lib
+import Matrix
 import Test.Tasty.HUnit (Assertion, (@?=))
 
 matrix :: Int -> Int -> Matrix Int
