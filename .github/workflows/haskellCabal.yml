@@ -29,6 +29,11 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
+          
+    - name: Run hpack
+      run: |
+        sudo apt install hpack
+        hpack
 
     - name: Install dependencies
       run: |
