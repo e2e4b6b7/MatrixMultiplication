@@ -1,0 +1,21 @@
+name: Haskell CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    steps: 
+    - name: Download Stack
+      run: curl -sSL https://get.haskellstack.org/ | sh
+    - name: Init Stack
+      run: stack init
+    - name: Build
+      run: stack build
+    - name: Test
+      run: stack test
